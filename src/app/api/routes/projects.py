@@ -1,6 +1,8 @@
 from typing import Annotated
 from uuid import UUID
+
 from fastapi import APIRouter, Depends, status
+
 from app.api.dependencies import UserContext, get_current_user, require_editor
 from app.schemas.projects import (
     ProjectCreate,
@@ -9,7 +11,6 @@ from app.schemas.projects import (
     ProjectStatus,
     ProjectUpdate,
 )
-
 from app.services.projects import ProjectService, get_project_service
 
 router = APIRouter(prefix="/projects", tags=["projects"])
@@ -41,7 +42,7 @@ async def get_project(
     return service.get_project(project_id)
 
 
-@router.patch(f"/{project_id}", response_model=ProjectRead)
+@router.patch("/{project_id}", response_model=ProjectRead)
 async def update_project(
     project_id: UUID,
     payload: ProjectUpdate,

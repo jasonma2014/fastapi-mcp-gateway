@@ -1,15 +1,15 @@
 from datetime import UTC, datetime
-from functools import cache, lru_cache
-from msilib import UuidCreate
+from functools import lru_cache
 from uuid import UUID, uuid4
 
 from app.schemas.projects import (
     ProjectCreate,
     ProjectListResponse,
     ProjectRead,
-    ProjectUpdate,
     ProjectStatus,
+    ProjectUpdate,
 )
+
 
 class ProjectNotFoundError(Exception):
     def __init__(self, project_id: UUID) -> None:

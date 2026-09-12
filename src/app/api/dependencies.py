@@ -1,13 +1,13 @@
 from typing import Annotated, Literal
-from uuid import UUID
 
 from fastapi import Depends, Header, HTTPException, status
 from pydantic import BaseModel
+
 from app.core.config import Settings, get_settings
 
 
 class UserContext(BaseModel):
-    user_id: UUID
+    user_id: str
     role: Literal["viewer", "editor", "admin"]
 
 def get_current_user(
@@ -30,14 +30,12 @@ def get_current_user(
 
 
 def require_editor(
-    user: Annotated[UserContext, Depends(get_current_user)]
+    user: Annotated[UserContext, Depends(get_current_user)],
 ) -> UserContext:
-    if user.role not in ["editor", "admin"]:
+    if user.role not in {"editor", "admin"}:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="This action requires editor or admin privileges.",
+            detail="This action requires editor or admin access.",
         )
     return user
-
-
 
